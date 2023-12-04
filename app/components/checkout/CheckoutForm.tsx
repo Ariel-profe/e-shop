@@ -7,6 +7,7 @@ import { useCart } from "@/hooks/useCart";
 import { formatPrice } from "@/utils/formatPrice";
 import toast from "react-hot-toast";
 import { Heading } from "../ui/Heading";
+import { Button } from "../ui/Button";
 
 interface Props {
     clientSecret: string;
@@ -69,6 +70,14 @@ export const CheckoutForm:FC<Props> = ({clientSecret, handleSetPaymentSuccess}) 
         <PaymentElement 
             id="payment-element" 
             options={{layout: "tabs"}}
+        />
+        <div className="py-4 text-center text-slate-700 text-xl font-bold">
+            Total: {formattedPrice}
+        </div>
+        <Button
+            label={isLoading ? 'Processing' : 'Pay now'}
+            disabled={isLoading || !stripe || !elements}
+            onClick={() => {}}
         />
     </form>
   )

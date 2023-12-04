@@ -1,16 +1,25 @@
 "use client";
 
+import { FC } from "react";
 import Link from "next/link";
 import { MdArrowBack } from "react-icons/md";
+
 import { useCart } from "@/hooks/useCart"
 import { Heading } from "../ui/Heading";
 import { Button } from "../ui/Button";
 import { CartItemCard } from "./CartItemCard";
 import { formatPrice } from "@/utils/formatPrice";
+import { IUser } from "@/interfaces/interfaces";
+import { useRouter } from "next/navigation";
 
-export const CartClient = () => {
+interface Props {
+    user: IUser | null;
+}
+
+export const CartClient:FC<Props> = ({user}) => {
 
     const {cartProducts, isLoaded, handleClearCart, cartTotal} = useCart();
+    const router = useRouter();
 
     if(!isLoaded){return <></>}
 
@@ -52,7 +61,11 @@ export const CartClient = () => {
                     <span>{formatPrice(cartTotal)}</span>
                 </div>
                 <p className="text-slate-500">Taxes and shipping calculate at checkout</p>
-                <Button label="Checkout" onClick={() => {}} />
+                <Button 
+                    label={user ? "Checkout" : "Login to Checkout"} 
+                    onClick={() => user ? router.push('/checkout') : router.push('/login')}
+                    outline={user ? false : true} 
+                />
                 <Link href={"/"} className="text-slate-500 flex items-center gap-1 mt-2">
                     <MdArrowBack />
                     <span>Continue shopping</span>
